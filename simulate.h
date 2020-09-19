@@ -18,21 +18,22 @@ public:
     explicit Simulate(QWidget *parent = nullptr);
     ~Simulate();
     Node *list;
+    Node *aux, *aux2;
     void showResult();
     bool showStart, creatRow;
     void setShow(bool);
-    int cpu, quantum;
-    void simulate();
+    int cpu, quantum, row, execution_time = 0;
     void print(int, Process);
     void setList(Node *&);
     void setProperties(int , int);
     void showData();
 private slots:
     void on_START_clicked();
-
+    void printProcess();
+    void simulate();
 private:
     Ui::Simulate *ui;
-    QTimer *m_timer;
+    QTimer *timer1, *timer2;
     enum {
         NAME, PRIORITY, CPU, TIME_ARRIVED, STATUS, WAITING, SUCCESS
     };

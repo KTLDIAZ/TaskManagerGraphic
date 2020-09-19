@@ -93,29 +93,31 @@ void Simulate::simulate() {
         print(row,aux->data);
     } else if (aux->data.cpu > 0) {
         if(cpu != aux->data.cpu)
-            aux->data.waiting_time += execution_time;
+            aux->data.waiting_time += execution_time;    
         aux->data.status = "Blocked";
         aux->data.cpu -= quantum;
         aux->data.success_time += quantum;
-        if(aux->data.cpu <= 0)
+        if(aux->data.cpu <= 0) {
             aux->data.status = "Success";
+            aux->data.success_time += aux->data.waiting_time;
+        }
         cpu -= quantum;
         execution_time += quantum;
         print(row,aux->data);
     }
     aux = aux->next;
     aux2 = aux2->next;
+    row += 1;
     if(aux == NULL){
         aux = list;
         aux2 = list;
         row = 0;
     }
     if(cpu == 0) {
-        aux->data.status = "Success";
-        aux->data.success_time += aux->data.waiting_time;
         showResult();
+        timer1->stop();
+        timer2->stop();
     }
-    row += 1;
 }
 
 void Simulate::on_START_clicked()

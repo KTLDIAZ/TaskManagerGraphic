@@ -10,7 +10,7 @@ Simulate::Simulate(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("Nodes");
     QStringList titles;
-    titles << "Name" << "Priority" << "Cpu" << "Tome Arrived" << "Status" << "Waiting" << "Success";
+    titles << "Name" << "Priority" << "Cpu" << "Time Arrived" << "Status" << "Waiting" << "Success";
     ui->tableWidget->setColumnCount(7);
     ui->tableWidget->setHorizontalHeaderLabels(titles);
 }
@@ -58,6 +58,17 @@ void Simulate::showData() {
     }
 }
 
+void Simulate::showResult() {
+    int row = 0;
+    Node *aux;
+    aux = list;
+    while(aux != nullptr){
+        print(row, aux->data);
+        aux = aux->next;
+        row = row + 1;
+    }
+}
+
 void Simulate::simulate() {
     Node *aux;
     aux = list;
@@ -65,8 +76,9 @@ void Simulate::simulate() {
     int row = 0;
     creatRow = false;
     while(aux != NULL) {
-        if(aux->data.cpu != 0)
+        if(aux->data.cpu != 0){
             aux->data.status = "In process";
+        }
         if (aux->data.cpu <= quantum && aux->data.status != "Success") {
             print(row,aux->data);
             cpu -= aux->data.cpu;
@@ -83,7 +95,7 @@ void Simulate::simulate() {
             aux->data.status = "Blocked";
             aux->data.cpu -= quantum;
             aux->data.success_time += quantum;
-            if(aux->data.cpu == 0)
+            if(aux->data.cpu <= 0)
                 aux->data.status = "Success";
             cpu -= quantum;
             execution_time += quantum;
@@ -101,7 +113,7 @@ void Simulate::simulate() {
         }
         row ++;
     }
-
+    showResult();
 }
 
 void Simulate::on_START_clicked()

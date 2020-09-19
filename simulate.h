@@ -8,6 +8,8 @@ namespace Ui {
 class Simulate;
 }
 
+class QTimer;
+
 class Simulate : public QWidget
 {
     Q_OBJECT
@@ -16,6 +18,7 @@ public:
     explicit Simulate(QWidget *parent = nullptr);
     ~Simulate();
     Node *list;
+    void showResult();
     bool showStart, creatRow;
     void setShow(bool);
     int cpu, quantum;
@@ -29,7 +32,7 @@ private slots:
 
 private:
     Ui::Simulate *ui;
-
+    QTimer *m_timer;
     enum {
         NAME, PRIORITY, CPU, TIME_ARRIVED, STATUS, WAITING, SUCCESS
     };

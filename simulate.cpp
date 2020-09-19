@@ -92,8 +92,10 @@ void Simulate::simulate() {
         aux->data.status = "Success";
         print(row,aux->data);
     } else if (aux->data.cpu > 0) {
-        if(cpu != aux->data.cpu)
-            aux->data.waiting_time += execution_time;    
+        if(cpu != aux->data.cpu) {
+            aux->data.waiting_time += execution_time;
+            execution_time += quantum;
+        }
         aux->data.status = "Blocked";
         aux->data.cpu -= quantum;
         aux->data.success_time += quantum;
@@ -102,7 +104,7 @@ void Simulate::simulate() {
             aux->data.success_time += aux->data.waiting_time;
         }
         cpu -= quantum;
-        execution_time += quantum;
+
         print(row,aux->data);
     }
     aux = aux->next;
